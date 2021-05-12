@@ -1242,6 +1242,6 @@ noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 10, 2)<CR>
 nnoremap <silent> <Leader>n :tabnew<CR>
 
 "change line number to get maximum visability
-:highlight LineNr guifg=#0086b3
-hi TabLine      guifg=#333 guibg=#222 gui=none ctermfg=254 ctermbg=238 cterm=none
+:highlight LineNr guifg=#7aa2f7 
+hi TabLine      guifg=#7aa2f7 guibg=#222 gui=none ctermfg=254 ctermbg=238 cterm=none
 

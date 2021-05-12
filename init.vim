@@ -79,6 +79,8 @@ nnoremap <silent> <Leader>e :CocDiagnostics<CR>
 inoremap jj <Esc>
 
 " colorscheme themes
+let g:tokyonight_style = "night"
+let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
 colorscheme tokyonight
 
 "general
@@ -1238,3 +1240,8 @@ noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 10, 2)<CR>
 "
 "open new tab
 nnoremap <silent> <Leader>n :tabnew<CR>
+
+"change line number to get maximum visability
+:highlight LineNr guifg=#0086b3
+hi TabLine      guifg=#333 guibg=#222 gui=none ctermfg=254 ctermbg=238 cterm=none
+

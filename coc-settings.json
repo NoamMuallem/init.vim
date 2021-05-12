@@ -18,5 +18,8 @@
   "html.suggest.html5": true,
   "html.validate.html": true,
   "prettier.eslintIntegration": true,
-  "suggest.noselect": false
+  "suggest.noselect": false,
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "diagnostic.errorSign": "✘"
 }

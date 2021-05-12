@@ -70,8 +70,10 @@ call plug#end()
 
 luafile ~/.config/nvim/evil_line.lua
 
-"CocDiagnostics
-nnoremap <silent> <Leader> e :CocDiagnostics<CR>
+"mapping leader e to coc dignostics
+nnoremap <silent> <Leader>e :CocDiagnostics<CR>
+
+"
 
 " map esc key to jj
 inoremap jj <Esc>
@@ -702,7 +704,7 @@ if has('nvim')
                 \ endif
     let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 else
-    let g:terminal_ansi_colors = [
+    LET g:terminal_ansi_colors = [
                 \ '#4e4e4e', '#d68787', '#5f865f', '#d8af5f',
                 \ '#85add4', '#d7afaf', '#87afaf', '#d0d0d0',
                 \ '#626262', '#d75f87', '#87af87', '#ffd787',
@@ -734,8 +736,7 @@ set expandtab     " Tab changes to spaces. Format with :retab
 " Mappings {{{
 
 " Map leader to space
-let mapleader=" "
-let maplocalleader = "\\"
+let mapleader="\\"
 
 " Toggle number sets
 " nnoremap <leader>num :set number! \| set relativenumber!<cr>
@@ -1233,3 +1234,7 @@ augroup END
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 10, 2)<CR>
 noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 10, 2)<CR>
 " }}}
+" 
+"
+"open new tab
+nnoremap <silent> <Leader>n :tabnew<CR>

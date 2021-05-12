@@ -53,9 +53,13 @@ Plug 'folke/trouble.nvim'
 
 
 "airline (status bar on bottom)
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
 Plug 'jreybert/vimagit'
+
+"lua line
+Plug 'hoob3rt/lualine.nvim'
+Plug 'kyazdani42/nvim-web-devicons'
 
 " easy motion
 Plug 'easymotion/vim-easymotion'
@@ -63,6 +67,8 @@ Plug 'easymotion/vim-easymotion'
 
 " Initialize plugin system
 call plug#end()
+
+luafile ~/.config/nvim/evil_line.lua
 
 lua << EOF
   require("trouble").setup {
@@ -229,18 +235,18 @@ if has("mouse_sgr")
 endif
 
 "smart tab line
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#left_sep = ' '
-let g:airline#extensions#tabline#left_alt_sep = '|'
-let g:airline#extensions#tabline#formatter = 'unique_tail'
+"let g:airline#extensions#tabline#enabled = 1
+"let g:airline#extensions#tabline#left_sep = ' '
+"let g:airline#extensions#tabline#left_alt_sep = '|'
+"let g:airline#extensions#tabline#formatter = 'unique_tail'
 
 inoremap jk <ESC>
 
 " Nerd Tree {{{
 "
-" nnoremap <c-o> :NERDTreeToggle<cr>
-autocmd StdinReadPre * let s:std_in=1
-autocmd VimEnter * NERDTree
+"open nerdtree automaticalli
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * NERDTree
 nnoremap <silent> <Leader>v :NERDTreeFind<CR>
 let g:NERDTreeChDirMode = 2
 let g:NERDTreeHijackNetrw=0
@@ -360,16 +366,9 @@ set shiftwidth=2
 set expandtab
 
 "choose theme
-let g:airline_theme='luna'
+"let g:airline_theme='luna'
 syntax enable
 set background=dark
-let g:solarized_termcolors=256
-if has('gui_running')
-    set background=light
-else
-    set background=dark
-endif
-
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active

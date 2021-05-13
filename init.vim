@@ -81,7 +81,7 @@ let g:lualine = {
     \  'lualine_a' : [ ['mode', {'upper': v:true,},], ],
     \  'lualine_b' : [ ['branch', {'icon': '',}, ], ],
     \  'lualine_c' : [ ['diagnostics', {'sources':['coc']}, [ 'filename', {'file_status': v:true,},], ],],
-    \  'lualine_x' : [ 'encoding', 'fileformat', 'filetype' ],
+    \  'lualine_x' : [ 'filetype' ],
     \  'lualine_y' : [ 'progress' ],
     \  'lualine_z' : [ 'location'  ],
     \},

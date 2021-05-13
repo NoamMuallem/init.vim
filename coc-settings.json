@@ -1,27 +1,27 @@
 {
-  "coc.preferences.formatOnSaveFiletypes": [
-    "css",
-    "html",
-    "javascript",
-    "javascriptreact",
-    "json",
-    "Markdown"
-  ],
-  "emmet.showSuggestionsAsSnippets": true,
-  "emmet.includeLanguages": {
-    "eruby": "html"
-  },
-  "html.format.enable": true,
-  "html.filetypes": ["html", "handlebars", "erb"],
-  "html.suggest.html5": true,
-  "html.validate.html": true,
-  "prettier.eslintIntegration": true,
-  "suggest.noselect": false,
-  "diagnostic.virtualText": true,
-  "diagnostic.virtualTextCurrentLineOnly": false,
-  "diagnostic.virtualTextPrefix": " ➜",
-  "diagnostic.level": "hint",
-  "diagnostic.format": "[%severity] %message",
-  "diagnostic.refreshOnInsertMode": true,
-  "diagnostic.errorSign": "ⓧ"
+    "coc.preferences.formatOnSaveFiletypes": [
+        "css",
+        "html",
+        "javascript",
+        "javascriptreact",
+        "json",
+        "Markdown"
+    ],
+    "emmet.showSuggestionsAsSnippets": true,
+    "emmet.includeLanguages": {
+        "eruby": "html"
+    },
+    "html.format.enable": true,
+    "html.filetypes": ["html", "handlebars", "erb"],
+    "html.suggest.html5": true,
+    "html.validate.html": true,
+    "prettier.eslintIntegration": true,
+    "suggest.noselect": false,
+    "diagnostic.virtualText": true,
+    "diagnostic.virtualTextCurrentLineOnly": false,
+    "diagnostic.virtualTextPrefix": "     ➜ ",
+    "diagnostic.level": "hint",
+    "diagnostic.format": "[%severity] %message",
+    "diagnostic.refreshOnInsertMode": true,
+    "diagnostic.errorSign": "ⓧ"
 }

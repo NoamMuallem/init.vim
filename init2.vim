@@ -30,6 +30,7 @@ Plug 'terryma/vim-smooth-scroll'
 " git wrapper
 Plug 'tpope/vim-fugitive'
 
+
 " react snippets
 Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
@@ -48,7 +49,6 @@ Plug 'maxmellon/vim-jsx-pretty'
 Plug 'yuezk/vim-js'
 
 "error presentation
-Plug 'kyazdani42/nvim-web-devicons'
 Plug 'folke/trouble.nvim'
 
 
@@ -115,11 +115,6 @@ nnoremap <Leader><Leader> <C-^>
 nnoremap <tab> <c-w>w
 nnoremap <c-w><c-c> <c-w>c
 
-" Delete current buffer
-nnoremap <silent> <leader>bd :bp <bar> bd #<cr>
-" Close current buffer
-nnoremap <silent> <leader>bc :close<cr>
-
 " Split navigations mappings
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -131,73 +126,6 @@ set splitright
 
 " }}}
 
-" Grep {{{
-" This is only availale in the quickfix window, owing to the filetype
-" restriction on the autocmd (see below).
-function! <SID>OpenQuickfix(new_split_cmd)
-  " 1. the current line is the result idx as we are in the quickfix
-  let l:qf_idx = line('.')
-  " 2. jump to the previous window
-  wincmd p
-  " 3. switch to a new split (the new_split_cmd will be 'vnew' or 'split')
-  execute a:new_split_cmd
-  " 4. open the 'current' item of the quickfix list in the newly created buffer
-  "    (the current means, the one focused before switching to the new buffer)
-  execute l:qf_idx . 'cc'
-endfunction
-
-augroup grep_augroup
-    autocmd!
-    autocmd QuickFixCmdPost [^l]* copen
-    autocmd QuickFixCmdPost l*    lopen
-    autocmd FileType qf nnoremap <buffer> <C-v> :call <SID>OpenQuickfix("vnew")<CR>
-    autocmd FileType qf nnoremap <buffer> <C-x> :call <SID>OpenQuickfix("split")<CR>
-augroup END
-
-" Set grepprg as RipGrep or ag (the_silver_searcher), fallback to grep
-if executable("rg")
-    let &grepprg='rg --vimgrep --no-heading --smart-case --hidden --follow -g "!{' . &wildignore . '}" $*'
-    set grepformat=%f:%l:%c:%m,%f:%l:%m
-elseif executable("ag")
-    let &grepprg='ag --vimgrep --smart-case --hidden --follow --ignore "!{' . &wildignore . '}" $*'
-    set grepformat=%f:%l:%c:%m
-else
-    let &grepprg='grep -n -r --exclude=' . shellescape(&wildignore) . ' $* .'
-endif
-
-function s:RipGrepCWORD(bang, visualmode, ...) abort
-  let search_word = a:1
-
-  if a:visualmode
-    " Get the line and column of the visual selection marks
-    let [lnum1, col1] = getpos("'<")[1:2]
-    let [lnum2, col2] = getpos("'>")[1:2]
-
-    " Get all the lines represented by this range
-    let lines = getline(lnum1, lnum2)
-
-    " The last line might need to be cut if the visual selection didn't end on the last column
-    let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
-    " The first line might need to be trimmed if the visual selection didn't start on the first column
-    let lines[0] = lines[0][col1 - 1:]
-
-    " Get the desired text
-    let search_word = join(lines, "\n")
-  endif
-  if search_word == ""
-    let search_word = expand("<cword>")
-  endif
-  echom "Searching for " . search_word
-  " Silent removes the "press enter to continue" prompt, and band (!) is for
-  " not jumping to the first result
-  let grepcmd = "silent grep" . a:bang ." -- " . shellescape(search_word)
-  execute grepcmd
-endfunction
-command! -bang -range -nargs=? RipGrepCWORD call <SID>RipGrepCWORD("<bang>", v:false, <q-args>)
-command! -bang -range -nargs=? RipGrepCWORDVisual call <SID>RipGrepCWORD("<bang>", v:true, <q-args>)
-nmap <c-f> :RipGrepCWORD!<Space>
-vmap <c-f> :RipGrepCWORDVisual!<cr>
-" }}}
 
 " Highlight word under cursor {{{
 function! HighlightWordUnderCursor()
@@ -215,25 +143,6 @@ augroup Start
 augroup END
 " }}}
 
-" Diff with last save function {{{
-function! s:DiffWithSaved()
-    let filetype=&ft
-    diffthis
-    vnew | r # | normal! 1Gdd
-    exe "setlocal bt=nofile bh=wipe nobl noswf ro foldlevel=999 ft=" . filetype
-    diffthis
-    nnoremap <buffer> q :bd!<cr>
-    augroup ShutDownDiffOnLeave
-        autocmd! * <buffer>
-        autocmd BufDelete,BufUnload,BufWipeout <buffer> wincmd p | diffoff |
-                    \wincmd p
-    augroup END
-
-    wincmd p
-endfunction
-com! DiffSaved call s:DiffWithSaved()
-nnoremap <leader>ds :DiffSaved<cr>
-" }}}
 " Insert mappings {{{
 
 " Paste in insert mode
@@ -254,15 +163,6 @@ nnoremap 0 ^
 nnoremap E $
 vnoremap E $
 
-" Map dp and dg with leader for diffput and diffget
-nnoremap <leader>dp :diffput<cr>
-nnoremap <leader>dg :diffget<cr>
-nnoremap <leader>du :diffupdate<cr>
-nnoremap <leader>dn :windo diffthis<cr>
-nnoremap <leader>df :windo diffoff<cr>
-
-" Map enter to no highlight
-nnoremap <silent> <CR> :nohlsearch<CR><CR>
 
 " Search mappings {{{
 nnoremap <silent> * :execute "normal! *N"<cr>
@@ -276,20 +176,6 @@ nnoremap <expr> N  'nN'[v:searchforward]
 xnoremap <expr> N  'nN'[v:searchforward]
 onoremap <expr> N  'nN'[v:searchforward]
 
-" Search visually selected text with // or * or #
-vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
-
-vnoremap <silent> * :<C-U>
-            \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-            \gvy/<C-R>=&ic?'\c':'\C'<CR><C-R><C-R>=substitute(
-            \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-            \gVzv:call setreg('"', old_reg, old_regtype)<CR>
-vnoremap <silent> # :<C-U>
-            \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
-            \gvy?<C-R>=&ic?'\c':'\C'<CR><C-R><C-R>=substitute(
-            \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
-            \gVzv:call setreg('"', old_reg, old_regtype)<CR>
-
 " }}}
 " Map - to move a line down and _ a line up
 " nnoremap -  :<c-u>execute 'move +'. v:count1<cr>
@@ -297,16 +183,8 @@ vnoremap <silent> # :<C-U>
 nnoremap - "ldd$"lp
 nnoremap _ "ldd2k"lp
 
-" Exit insert mode
-inoremap jk <esc>
-
-" " Copy visual selection to clipboard
+" " Copy visual selection to clipboard with leader y
  vnoremap <leader>y "*y
-
-" Search and Replace {{{
-nnoremap <Leader>r :.,$s?<C-r><C-w>?<C-r><C-w>?gc<Left><Left><Left>
-" vnoremap <Leader>r :%s/<C-r><C-w>//g<Left><Left>
-vnoremap <leader>r "hy:.,$s?<C-r>h?<C-r>h?gc<left><left><left>
 
 " Special filetypes {{{
 augroup special_filetype
@@ -319,12 +197,6 @@ augroup end
 let g:sh_fold_enabled = 4
 
 com! FormatJSON exe '%!python -m json.tool'
-
-function FormatEqual() abort
-  let save_cursor = getcurpos()
-  normal! gg=G
-  call setpos('.', save_cursor)
-endfunction
 
 " }}}
 
@@ -409,7 +281,7 @@ set wildignore+=.hg,.git,.svn,*.DS_Store,*.pyc
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
-set updatetime=300
+set updatetime=200
 
 if v:version > 703 || v:version == 703 && has("patch541")
     set formatoptions+=j " Delete comment character when joining commented lines
@@ -422,30 +294,6 @@ set list
 set listchars=trail:·,precedes:«,extends:»,eol:↲,tab:▸\
 
 set path+=** " When searching, search also subdirectories
-
-" Set python path
-if executable("/usr/local/bin/python3")
-    let g:python3_host_prog="/usr/local/bin/python3"
-elseif executable("/usr/bin/python3")
-    let g:python3_host_prog="/usr/bin/python3"
-endif
-
-" Auto load file changes when focus or buffer is entered
-au FocusGained,BufEnter * :checktime
-
-if &history < 1000
-    set history=1000
-endif
-
-" Always show the signcolumn, otherwise it would shift the text each time
-" diagnostics appear/become resolved. {{{
-  if has("patch-8.1.1564")
-    " Recently vim can merge signcolumn and number column into one
-    set signcolumn=number
-  else
-    set signcolumn=yes
-  endif
-" }}}
 
 " Set relativenumber when focused {{{
 augroup numbertoggle
@@ -470,10 +318,6 @@ nmap <Leader>f <Plug>(easymotion-overwin-f)
 
 " s{char}{char} to move to {char}{char}
 nmap s <Plug>(easymotion-overwin-f2)
-
-" Move to line
-map <Leader>L <Plug>(easymotion-bd-jk)
-nmap <Leader>L <Plug>(easymotion-overwin-line)
 
 " Move to word
 map  <Leader>w <Plug>(easymotion-bd-w)

@@ -99,6 +99,14 @@ require'lualine'.setup {
 EOF
 """""""""""""""""""""""""""""""""""""""""""""""""""""""}}
 
+""""""""""""""""""""""""""""""""""""""""NERD Commenter{{{
+let g:NERDCreateDefaultMappings = 1
+nmap <C-n> :NERDTreeToggle<CR>
+vmap ++ <plug>NERDCommenterToggle
+nmap ++ <plug>NERDCommenterToggle
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
 """"""""""""""""""""""""""""""""""""""""basic mapping{{
 "open new tab
 nnoremap <silent> <Leader>n :tabnew<CR>

@@ -108,6 +108,14 @@ nmap ++ <plug>NERDCommenterToggle
 """"""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 """"""""""""""""""""""""""""""""""""""""basic mapping{{
+"map m anf M to ; and ,
+nnoremap m ;
+nnoremap M ,
+
+"jump list movements
+nnoremap > <C-o>
+nnoremap < <C-i>
+
 "open new tab
 nnoremap <silent> <Leader>n :tabnew<CR>
 

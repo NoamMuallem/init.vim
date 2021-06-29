@@ -111,6 +111,8 @@ nmap ++ <plug>NERDCommenterToggle
 "map m anf M to ; and ,
 nnoremap m ;
 nnoremap M ,
+vnoremap m ;
+vnoremap M ,
 
 "jump list movements
 nnoremap > <C-o>

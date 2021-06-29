@@ -14,6 +14,9 @@ Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'scrooloose/nerdcommenter'
 Plug 'christoomey/vim-tmux-navigator'
 
+"show line indentation
+Plug 'Yggdroot/indentLine'
+
 " the silver searcher plugin for vim
 "Plug 'mileszs/ack.vim'
 "see origin for dependencies: https://www.chrisatmachine.com/Neovim/08-fzf/
@@ -105,6 +108,11 @@ nmap <C-n> :NERDTreeToggle<CR>
 vmap ++ <plug>NERDCommenterToggle
 nmap ++ <plug>NERDCommenterToggle
 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+
+""""""""""""""""""""""""""""""""""""""""Line Indentation{{{
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 """"""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 """"""""""""""""""""""""""""""""""""""""basic mapping{{

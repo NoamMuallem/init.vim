@@ -106,7 +106,6 @@ EOF
 let g:NERDCreateDefaultMappings = 1
 nmap <C-n> :NERDTreeToggle<CR>
 vmap ++ <plug>NERDCommenterToggle
-nmap ++ <plug>NERDCommenterToggle
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
@@ -116,6 +115,14 @@ let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 """"""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 """"""""""""""""""""""""""""""""""""""""basic mapping{{
+"mapping leader to space
+let mapleader =" "
+
+"map leader p and leader P to paste what was yanked, not deleted
+nmap <Leader>p "0p
+nmap <Leader>P "0P
+
+
 "map m anf M to ; and ,
 nnoremap m ;
 nnoremap M ,

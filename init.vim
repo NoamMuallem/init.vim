@@ -12,7 +12,6 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'scrooloose/nerdcommenter'
-Plug 'christoomey/vim-tmux-navigator'
 
 "show line indentation
 Plug 'Yggdroot/indentLine'
@@ -106,7 +105,6 @@ EOF
 let g:NERDCreateDefaultMappings = 1
 nmap <C-n> :NERDTreeToggle<CR>
 vmap ++ <plug>NERDCommenterToggle
-
 """"""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 
@@ -162,74 +160,6 @@ nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 
-" }}}
-
-" Grep {{{
-" This is only availale in the quickfix window, owing to the filetype
-" restriction on the autocmd (see below).
-function! <SID>OpenQuickfix(new_split_cmd)
-  " 1. the current line is the result idx as we are in the quickfix
-  let l:qf_idx = line('.')
-  " 2. jump to the previous window
-  wincmd p
-  " 3. switch to a new split (the new_split_cmd will be 'vnew' or 'split')
-  execute a:new_split_cmd
-  " 4. open the 'current' item of the quickfix list in the newly created buffer
-  "    (the current means, the one focused before switching to the new buffer)
-  execute l:qf_idx . 'cc'
-endfunction
-
-augroup grep_augroup
-    autocmd!
-    autocmd QuickFixCmdPost [^l]* copen
-    autocmd QuickFixCmdPost l*    lopen
-    autocmd FileType qf nnoremap <buffer> <C-v> :call <SID>OpenQuickfix("vnew")<CR>
-    autocmd FileType qf nnoremap <buffer> <C-x> :call <SID>OpenQuickfix("split")<CR>
-augroup END
-
-" Set grepprg as RipGrep or ag (the_silver_searcher), fallback to grep
-if executable("rg")
-    let &grepprg='rg --vimgrep --no-heading --smart-case --hidden --follow -g "!{' . &wildignore . '}" $*'
-    set grepformat=%f:%l:%c:%m,%f:%l:%m
-elseif executable("ag")
-    let &grepprg='ag --vimgrep --smart-case --hidden --follow --ignore "!{' . &wildignore . '}" $*'
-    set grepformat=%f:%l:%c:%m
-else
-    let &grepprg='grep -n -r --exclude=' . shellescape(&wildignore) . ' $* .'
-endif
-
-function s:RipGrepCWORD(bang, visualmode, ...) abort
-  let search_word = a:1
-
-  if a:visualmode
-    " Get the line and column of the visual selection marks
-    let [lnum1, col1] = getpos("'<")[1:2]
-    let [lnum2, col2] = getpos("'>")[1:2]
-
-    " Get all the lines represented by this range
-    let lines = getline(lnum1, lnum2)
-
-    " The last line might need to be cut if the visual selection didn't end on the last column
-    let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
-    " The first line might need to be trimmed if the visual selection didn't start on the first column
-    let lines[0] = lines[0][col1 - 1:]
-
-    " Get the desired text
-    let search_word = join(lines, "\n")
-  endif
-  if search_word == ""
-    let search_word = expand("<cword>")
-  endif
-  echom "Searching for " . search_word
-  " Silent removes the "press enter to continue" prompt, and band (!) is for
-  " not jumping to the first result
-  let grepcmd = "silent grep" . a:bang ." -- " . shellescape(search_word)
-  execute grepcmd
-endfunction
-command! -bang -range -nargs=? RipGrepCWORD call <SID>RipGrepCWORD("<bang>", v:false, <q-args>)
-command! -bang -range -nargs=? RipGrepCWORDVisual call <SID>RipGrepCWORD("<bang>", v:true, <q-args>)
-nmap <c-f> :RipGrepCWORD!<Space>
-vmap <c-f> :RipGrepCWORDVisual!<cr>
 " }}}
 
 " Highlight word under cursor {{{
@@ -330,9 +260,6 @@ vnoremap <silent> # :<C-U>
 nnoremap - "ldd$"lp
 nnoremap _ "ldd2k"lp
 
-" Exit insert mode
-inoremap jk <esc>
-
 " " Copy visual selection to clipboard
  vnoremap <leader>y "*y
 
@@ -340,26 +267,6 @@ inoremap jk <esc>
 nnoremap <Leader>r :.,$s?<C-r><C-w>?<C-r><C-w>?gc<Left><Left><Left>
 " vnoremap <Leader>r :%s/<C-r><C-w>//g<Left><Left>
 vnoremap <leader>r "hy:.,$s?<C-r>h?<C-r>h?gc<left><left><left>
-
-" Special filetypes {{{
-augroup special_filetype
-    au!
-    autocmd BufNewFile,BufRead *yaml setf yaml
-    autocmd FileType json syntax match Comment +\/\/.\+$+
-    autocmd BufNewFile,BufRead aliases.sh setf zsh
-    autocmd FileType javascript set filetype=javascriptreact | set iskeyword+=-
-augroup end
-let g:sh_fold_enabled = 4
-
-com! FormatJSON exe '%!python -m json.tool'
-
-function FormatEqual() abort
-  let save_cursor = getcurpos()
-  normal! gg=G
-  call setpos('.', save_cursor)
-endfunction
-
-" }}}
 
 " Vim smooth scroll {{{
 noremap <silent> <c-u> :call smooth_scroll#up(&scroll, 15, 2)<CR>
@@ -438,7 +345,6 @@ endif
 
 " Ignore node_modules
 set wildignore+=**/node_modules/**
-set wildignore+=.hg,.git,.svn,*.DS_Store,*.pyc
 
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
@@ -461,13 +367,6 @@ if executable("/usr/local/bin/python3")
     let g:python3_host_prog="/usr/local/bin/python3"
 elseif executable("/usr/bin/python3")
     let g:python3_host_prog="/usr/bin/python3"
-endif
-
-" Auto load file changes when focus or buffer is entered
-au FocusGained,BufEnter * :checktime
-
-if &history < 1000
-    set history=1000
 endif
 
 " Always show the signcolumn, otherwise it would shift the text each time
@@ -512,81 +411,6 @@ nmap <Leader>L <Plug>(easymotion-overwin-line)
 map  <Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader>w <Plug>(easymotion-overwin-w)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""fzf{{
-" This is the default extra key bindings
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-"
-" Enable per-command history.
-" CTRL-N and CTRL-P will be automatically bound to next-history and
-" previous-history instead of down and up. If you don't like the change,
-" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-let g:fzf_history_dir = '~/.local/share/fzf-history'
-
-map <leader>b :Buffers<CR>
-nnoremap <C-f> :Rg<CR>
-
-
-let g:fzf_tags_command = 'ctags -R'
-" Border color
-let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
-
-let $FZF_DEFAULT_OPTS = '--layout=reverse --info=inline'
-let $FZF_DEFAULT_COMMAND="rg --files --hidden"
-
-
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
-
-"Get Files
-command! -bang -nargs=? -complete=dir Files
-    \ call fzf#vim#files(<q-args>, fzf#vim#with_preview({'options': ['--layout=reverse', '--info=inline']}), <bang>0)
-
-
-" Get text in files with Rg
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
-  \   fzf#vim#with_preview(), <bang>0)
-
-" Ripgrep advanced
-function! RipgrepFzf(query, fullscreen)
-  let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case %s || true'
-  let initial_command = printf(command_fmt, shellescape(a:query))
-  let reload_command = printf(command_fmt, '{q}')
-  let spec = {'options': ['--phony', '--query', a:query, '--bind', 'change:reload:'.reload_command]}
-  call fzf#vim#grep(initial_command, 1, fzf#vim#with_preview(spec), a:fullscreen)
-endfunction
-
-command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
-
-" Git grep
-command! -bang -nargs=* GGrep
-  \ call fzf#vim#grep(
-  \   'git grep --line-number '.shellescape(<q-args>), 0,
-  \   fzf#vim#with_preview({'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
-
-" undo after coding in insert mode will not undo all text but every word
-" seperated by spaces
-inoremap <space> <C-G>u<space>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""" Nerd Tree {{{
 "
@@ -702,69 +526,10 @@ autocmd BufEnter * call SyncTree()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
 
 """"""""""""""""""""""""""""""""""""""""""""""""""" vim-prettier{{
-let g:prettier#quickfix_enabled = 0
-let g:prettier#quickfix_auto_focus = 0
-" prettier command for coc
-command! -nargs=0 Prettier :CocCommand prettier.formatFile
-" line width for prettier
-let g:prettier#config#print_width = '70'
+let g:prettier#autoformat = 0
+:autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
 """"""""""""""""""""""""""""""""""""""""""""""""""""""}}
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""" ctrlp{{
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
-
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""" coc {{{
-let g:coc_global_extensions = [
-            \    "coc-cfn-lint",
-            \    "coc-css",
-            \    "coc-diagnostic",
-            \    "coc-dictionary",
-            \    "coc-docker",
-            \    "coc-emmet",
-            \    "coc-emoji",
-            \    "coc-eslint",
-            \    "coc-groovy",
-            \    "coc-highlight",
-            \    "coc-html",
-            \    "coc-json",
-            \    "coc-markdownlint",
-            \    "coc-marketplace",
-            \    "coc-neosnippet",
-            \    "coc-pairs",
-            \    "coc-prettier",
-            \    "coc-python",
-            \    "coc-react-refactor",
-            \    "coc-scssmodules",
-            \    "coc-sh",
-            \    "coc-snippets",
-            \    "coc-styled-components",
-            \    "coc-swagger",
-            \    "coc-syntax",
-            \    "coc-tabnine",
-            \    "coc-tag",
-            \    "coc-tsserver",
-            \    "coc-yaml"
-            \]
-
-augroup format_coc_group
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder.
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-function! s:show_documentation()
-    if (index(['vim','help'], &filetype) >= 0)
-        execute 'h '.expand('<cword>')
-    else
-        call CocAction('doHover')
-    endif
-endfunction
-
+""""""""""""""""""""""""""""""""""""""""""""""""""" coc{{
 " Use `[g` and `]g` to navigate diagnostics
 nmap <silent> [g <Plug>(coc-diagnostic-prev)
 nmap <silent> ]g <Plug>(coc-diagnostic-next)
@@ -773,57 +538,11 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  else
-    call CocAction('doHover')
-  endif
-endfunction
-
-" Highlight symbol under cursor on CursorHold
-autocmd CursorHold * silent call CocActionAsync('highlight')
-
-" Remap for rename current word
-nmap <F2> <Plug>(coc-rename)
-
-
-augroup mygroup
-  autocmd!
-  " Setup formatexpr specified filetype(s).
-  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
-  " Update signature help on jump placeholder
-  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
-
-
-" Remap for do codeAction of current line
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Fix autofix problem of current line
-nmap <leader>qf  <Plug>(coc-fix-current)
-""""""""""""""""""""""""""""""""""""""""""""""""" }}}
-
-""""""""""""""""""""""""""""""""""""""" Install all coc plugins {{{
-
-function! InstallAllCocExtensions() abort
-  let all_extensions = get(g:, 'coc_global_extensions', [])
-  let iterator = 10
-  let counter = 0
-  for extension in all_extensions
-    if counter % iterator == 0
-      echom string(all_extensions[counter:counter+iterator-1])
-      call coc#util#install_extension([extension])
-    endif
-    let counter += 1
-  endfor
-endfunction
-
-command! -bar -complete=custom,s:InstallOptions CocInstallAll
-      \ :call InstallAllCocExtensions()
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""" }}}
-
+""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
+"""""""""""""""""""""""""""""""""""""""""""""""""""" ctrlp{{
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
 """""""""""""""""""""""""""""""""""""""""""""""""style{{
 "change line number to get maximum visability
 :highlight LineNr guifg=#7aa2f7

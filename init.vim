@@ -136,7 +136,9 @@ set splitright
 
 " }}}
 """"""""""""""""""""""""""""""""""""""""}}} 
-"
+"setting mouse to work
+set mouse=a
+
 " Set relativenumber when focused {{{
 augroup numbertoggle
     autocmd!

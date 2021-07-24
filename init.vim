@@ -74,6 +74,8 @@ EOF
 """"""""""""""""""""""""""""""""""""""""Line Indentation{{{
 let g:indentLine_char_list = ['|', '¦', '┆', '┊']
 """"""""""""""""""""""""""""""""""""""""""""""""""""""}}}
+
+"""""""""""""""""""""""""""""""""""""""" basic mapping {{{
 "mapping leader to space
 let mapleader =" "
 
@@ -107,6 +109,27 @@ inoremap jj <Esc>
 
 nnoremap - "ldd$"lp
 nnoremap _ "ldd2k"lp
+" Windows mappings {{{
+nnoremap <Leader><Leader> <C-^>
+nnoremap <tab> <c-w>w
+nnoremap <c-w><c-c> <c-w>c
+
+" Delete current buffer
+nnoremap <silent> <leader>bd :bp <bar> bd #<cr>
+" Close current buffer
+nnoremap <silent> <leader>bc :close<cr>
+
+" Split navigations mappings
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+set splitbelow
+set splitright
+
+" }}}
+""""""""""""""""""""""""""""""""""""""""}}} 
 "
 " Set relativenumber when focused {{{
 augroup numbertoggle
@@ -114,6 +137,7 @@ augroup numbertoggle
     autocmd BufEnter,FocusGained,InsertLeave * set number relativenumber
     autocmd BufLeave,FocusLost,InsertEnter   * set number norelativenumber
 augroup END
+""""""""""""""""""""""""""""""""""" }}}
 
 :set nu  " show number of current line
 :set scrolloff=4 " will start scrolling down when your 8 lines from end of screen
@@ -132,16 +156,16 @@ set shiftwidth=2
 " always uses spaces instead of tab characters
 set expandtab
 set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
-""""""""""""""""""""""""""""""""""""colorscheme and styling{{
+""""""""""""""""""""""""""""""""""""colorscheme and styling{{{
 let g:tokyonight_style = "night"
 let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
 colorscheme tokyonight
 "change line number to get maximum visability
 :highlight LineNr guifg=#7aa2f7
 hi TabLine      guifg=#7aa2f7 guibg=#222 gui=none ctermfg=254 ctermbg=238 cterm=none
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""easy motion{{
+"""""""""""""""""""""""""""""""""""""""""""""""""easy motion{{{
 " <Leader>f{char} to move to {char}
 map  <Leader>f <Plug>(easymotion-bd-f)
 nmap <Leader>f <Plug>(easymotion-overwin-f)
@@ -156,7 +180,7 @@ nmap <Leader>L <Plug>(easymotion-overwin-line)
 " Move to word
 map  <Leader>w <Plug>(easymotion-bd-w)
 nmap <Leader>w <Plug>(easymotion-overwin-w)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}}
 
 nmap <C-n> :NERDTreeToggle<CR>
 vmap ++ <plug>NERDCommenterToggle

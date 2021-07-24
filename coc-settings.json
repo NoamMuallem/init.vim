@@ -5,7 +5,11 @@
     "javascript",
     "javascriptreact",
     "json",
-    "Markdown"
+    "Markdown",
+    "typescript",
+    "typescriptreact",
+    "typescript.tsx",
+    "graphql"
   ],
   "emmet.showSuggestionsAsSnippets": true,
   "emmet.includeLanguages": {

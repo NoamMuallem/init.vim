@@ -15,6 +15,10 @@ Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 "show line indentation
 Plug 'Yggdroot/indentLine'
 
+"fuzzy find
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 "resizing windows with hjkl
 Plug 'simeji/winresizer'
 

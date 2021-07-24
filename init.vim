@@ -15,8 +15,14 @@ Plug 'prettier/vim-prettier', { 'do': 'npm install' }
 "show line indentation
 Plug 'Yggdroot/indentLine'
 
+"resizing windows with hjkl
+Plug 'simeji/winresizer'
+
 "smooth scrolling
 Plug 'terryma/vim-smooth-scroll'
+
+" git wrapper
+Plug 'tpope/vim-fugitive'
 
 " react snippets
 Plug 'mlaursen/vim-react-snippets'

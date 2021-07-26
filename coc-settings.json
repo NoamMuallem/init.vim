@@ -9,7 +9,9 @@
     "typescript",
     "typescriptreact",
     "typescript.tsx",
-    "graphql"
+    "graphql",
+    "css",
+    "scss"
   ],
   "emmet.showSuggestionsAsSnippets": true,
   "emmet.includeLanguages": {

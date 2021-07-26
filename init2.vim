@@ -120,7 +120,6 @@ let mapleader =" "
 nmap <Leader>p "0p
 nmap <Leader>P "0P
 
-
 "map m anf M to ; and ,
 nnoremap m ;
 nnoremap M ,

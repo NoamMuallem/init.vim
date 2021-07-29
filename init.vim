@@ -7,24 +7,20 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " NERDTree navigation
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'scrooloose/nerdcommenter'
 
+"auto import
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
+
 "show line indentation
 Plug 'Yggdroot/indentLine'
 
-" the silver searcher plugin for vim
-"Plug 'mileszs/ack.vim'
-"see origin for dependencies: https://www.chrisatmachine.com/Neovim/08-fzf/
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-Plug 'airblade/vim-rooter'
-
-" prittier
-Plug 'prettier/vim-prettier', { 'do': 'npm install' }
+"resizing windows with hjkl
+Plug 'simeji/winresizer'
 
 "smooth scrolling
 Plug 'terryma/vim-smooth-scroll'
@@ -37,27 +33,7 @@ Plug 'SirVer/ultisnips'
 Plug 'mlaursen/vim-react-snippets'
 
 " themes
-Plug 'morhetz/gruvbox'
-Plug 'joshdick/onedark.vim'
-Plug 'tomasiser/vim-code-dark'
-Plug 'altercation/vim-colors-solarized'
-Plug 'kaicataldo/material.vim', { 'branch': 'main' }
 Plug 'folke/tokyonight.nvim'
-
-" syntax heighliter
-Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
-Plug 'maxmellon/vim-jsx-pretty'
-Plug 'yuezk/vim-js'
-
-"error presentation
-Plug 'kyazdani42/nvim-web-devicons'
-Plug 'folke/trouble.nvim'
-
-
-"airline (status bar on bottom)
-"Plug 'vim-airline/vim-airline'
-"Plug 'vim-airline/vim-airline-themes'
-Plug 'jreybert/vimagit'
 
 "lua line
 Plug 'hoob3rt/lualine.nvim'

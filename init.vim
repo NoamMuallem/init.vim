@@ -111,8 +111,38 @@ nnoremap < <C-i>
 nnoremap <silent> <Leader>n :tabnew<CR>
 
 
+"break insert undo sequence with space . , ? or !
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ? ?<c-g>u
+inoremap ! !<c-g>u
+inoremap <space> <space><c-g>u
+
+" map %% to create new file
+cnoremap %% <C-R>=fnameescape(expand('%:h')).'/'<cr>
+"use that remap to create new file and go to buffer
+map <leader>ew :e %%
+"create new file and split horizontally
+map <leader>es :sp %%
+"create new file and split vertically
+map <leader>ev :vsp %%
+"create new file and open in new tab
+map <leader>et :tabe %%
+
+" add symboles arround visually selected text
+vnoremap <leader>' <esc>`>a'<esc>`<i'<esc>
+vnoremap <leader>" <esc>`>a"<esc>`<i"<esc>
+vnoremap <leader>` <esc>`>a`<esc>`<i`<esc>
+vnoremap <leader>( <esc>`>a)<esc>`<i(<esc>
+vnoremap <leader>[ <esc>`>a]<esc>`<i[<esc>
+vnoremap <leader>{ <esc>`>a}<esc>`<i{<esc>
+
 "mapping leader e to coc dignostics
 nnoremap <silent> <Leader>e :CocDiagnostics<CR>
+
+"add line under and above without exiting normal mode
+nnoremap <silent> <leader>k  :<c-u>put!=repeat([''],v:count)<bar>']+1<cr>
+nnoremap <silent> <leader>j  :<c-u>put =repeat([''],v:count)<bar>'[-1<cr>
 
 " map esc key to jj
 inoremap jj <Esc>
@@ -235,6 +265,13 @@ vnoremap <silent> # :<C-U>
 " nnoremap _  :<c-u>execute 'move -1-'. v:count1<cr>
 nnoremap - "ldd$"lp
 nnoremap _ "ldd2k"lp
+vnoremap - :'<,'> m '>+1<CR>gv
+vnoremap _ :'<,'> m '<-2<CR>gv
+
+"keeping cursore centered after jumping in search resoults
+nnoremap n nzzzv
+nnoremap N Nzzzv
+nnoremap J mzJ`z
 
 " " Copy visual selection to clipboard
  vnoremap <leader>y "*y

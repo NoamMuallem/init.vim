@@ -9,8 +9,13 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
-Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
+"Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 Plug 'scrooloose/nerdcommenter'
+
+"telescope
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
 
 "auto import
 Plug 'ludovicchabant/vim-gutentags'
@@ -42,6 +47,10 @@ Plug 'kyazdani42/nvim-web-devicons'
 " easy motion
 Plug 'easymotion/vim-easymotion'
 
+" syntax heighliter
+Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
+Plug 'maxmellon/vim-jsx-pretty'
+Plug 'yuezk/vim-js'
 
 " Initialize plugin system
 call plug#end()
@@ -553,8 +562,11 @@ nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""}}
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
-"""""""""""""""""""""""""""""""""""""""""""""""""""" ctrlp{{
-let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+"""""""""""""""""""""""""""""""""""""""""""""""""""" telescope{{
+nnoremap <silent> <C-p> <cmd>Telescope find_files<cr>
+nnoremap <silent> ;r <cmd>Telescope live_grep<cr>
+nnoremap <silent> \\ <cmd>Telescope buffers<cr>
+nnoremap <silent> ;; <cmd>Telescope help_tags<cr>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
 """""""""""""""""""""""""""""""""""""""""""""""""style{{
 "change line number to get maximum visability

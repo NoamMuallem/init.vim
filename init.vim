@@ -39,6 +39,7 @@ Plug 'mlaursen/vim-react-snippets'
 
 " themes
 Plug 'folke/tokyonight.nvim'
+Plug 'pineapplegiant/spaceduck', { 'branch': 'main' }
 
 "lua line
 Plug 'hoob3rt/lualine.nvim'
@@ -48,6 +49,7 @@ Plug 'kyazdani42/nvim-web-devicons'
 Plug 'easymotion/vim-easymotion'
 
 " syntax heighliter
+Plug 'sheerun/vim-polyglot'
 Plug 'HerringtonDarkholme/yats.vim' " TS Syntax
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'yuezk/vim-js'
@@ -412,9 +414,16 @@ augroup END
 
 
 """"""""""""""""""""""""""""""""""""colorscheme and styling{{
-let g:tokyonight_style = "night"
+"let g:tokyonight_style = "night"
 let g:tokyonight_sidebars = [ "qf", "vista_kind", "terminal", "packer" ]
 colorscheme tokyonight
+    "if exists('+termguicolors')
+    ""  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    ""  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    ""  set termguicolors
+    "endif
+
+   "colorscheme spaceduck
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""easy motion{{
